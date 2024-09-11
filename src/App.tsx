@@ -1,5 +1,7 @@
 import { Grid, GridItem, HStack, Show } from "@chakra-ui/react";
 import NavBar from "./components/NavBar";
+import { useEffect, useState } from "react";
+import MovieGrid from "./components/MovieGrid";
 
 function App() {
   return (
@@ -19,7 +21,9 @@ function App() {
       <Show above="lg">
         <GridItem area="aside" paddingLeft={"20px"}></GridItem>
       </Show>
-      <GridItem area="main"></GridItem>
+      <GridItem area="main">
+        <MovieGrid></MovieGrid>
+      </GridItem>
     </Grid>
   );
 }

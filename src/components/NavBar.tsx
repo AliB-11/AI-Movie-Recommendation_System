@@ -23,8 +23,8 @@ const NavBar = (/*{ onSearch }: Props */) => {
       flexDirection={"row"}
     >
       <HStack marginRight={4} width={115} marginLeft={3} spacing={3}>
-        <Icon as={BiSolidCameraMovie} boxSize={10} />
-        <Image src={logo} height={"25px"} marginTop={"10px"}></Image>
+        <Icon as={BiSolidCameraMovie} boxSize={9} />
+        <Image src={logo} height={"23px"} marginTop={"7px"}></Image>
       </HStack>
       <Box marginTop={2} flex={"1"}>
         <SearchInput
@@ -33,7 +33,7 @@ const NavBar = (/*{ onSearch }: Props */) => {
           }}
         ></SearchInput>
       </Box>
-      <HStack marginLeft={6} marginTop={1}>
+      <HStack marginLeft={6} marginTop={3}>
         <ColorModeSwitch></ColorModeSwitch>
       </HStack>
     </Flex>
