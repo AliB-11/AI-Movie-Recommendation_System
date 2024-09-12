@@ -29,7 +29,7 @@ const useMovies = () => {
     setLoading(true);
     
     apiClient
-      .get<FetchMovieResponse>("/movie/upcoming",  { signal: controller.signal })
+      .get<FetchMovieResponse>("/discover/movie",  { signal: controller.signal })
       .then((res) => {setData(res.data.results); 
         delay(1100).then(() => setLoading(false))
         

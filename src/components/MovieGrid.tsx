@@ -6,16 +6,16 @@ import MovieSkeleton from "./MovieSkeleton";
 const MovieGrid = () => {
   const { data, error, isLoading } = useMovies();
 
-  const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; //map 6 skeletons
+  const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]; //map 6 skeletons
 
   return (
     <>
       {error && <Text>{error}</Text>}
 
       <SimpleGrid
-        spacing={12}
-        columns={{ base: 2, md: 3, lg: 4, xl: 5 }}
-        padding={"15px"}
+        spacing={8}
+        columns={{ base: 2, md: 3, lg: 4, xl: 5, "2xl": 6 }}
+        padding={"25px"}
       >
         {isLoading
           ? skeletons.map((skeleton) => <MovieSkeleton key={skeleton} />)

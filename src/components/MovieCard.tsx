@@ -10,12 +10,13 @@ interface Props {
 
 const MovieCard = ({ movie }: Props) => {
   return (
-    <Card key={movie.title} borderRadius={7} overflow={"hidden"}>
-      <Image
-        src={getImage(movie.poster_path)}
-        height={"280px"}
-        width={"225px"}
-      />
+    <Card
+      key={movie.title}
+      borderRadius={7}
+      overflow={"hidden"}
+      width={"190px"}
+    >
+      <Image src={getImage(movie.poster_path)} height={"280px"} />
       <CardBody>
         <HStack justifyContent={"space-between"}>
           <Heading fontSize={"lg"} marginTop={2}>
