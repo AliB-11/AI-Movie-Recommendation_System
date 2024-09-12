@@ -16,25 +16,35 @@ interface FetchMovieResponse {
   results: MovieObjects[];
 }
 
+const delay = (ms:number) => new Promise( resolve => setTimeout(resolve, ms));
+
 const useMovies = () => {
  
   const [data, setData] = useState<MovieObjects[]>([]);
   const [error, setError] = useState("");
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController(); 
+    setLoading(true);
+    
     apiClient
       .get<FetchMovieResponse>("/movie/upcoming",  { signal: controller.signal })
-      .then((res) => setData(res.data.results))
+      .then((res) => {setData(res.data.results); 
+        delay(1100).then(() => setLoading(false))
+        
+      })
       .catch((err) => {
         if (err instanceof CanceledError) 
           return;
-        setError(err.message)});
+        setError(err.message);
+        setLoading(false);
+      });
 
       return () => controller.abort();
   }, []);
 
-  return {data, error}
+  return {data, error, isLoading}
 
 }
 
