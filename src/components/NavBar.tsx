@@ -6,10 +6,10 @@ import store_dark from "../assets/Store_dark.png";
 import Store_light from "../assets/Store_light.png";
 
 interface Props {
-  //onSearch: (search: string) => void;
+  onSearch: (search: string) => void;
 }
 
-const NavBar = (/*{ onSearch }: Props */) => {
+const NavBar = ({ onSearch }: Props) => {
   const { toggleColorMode, colorMode } = useColorMode();
   let logo = store_dark;
   colorMode === "dark" ? (logo = store_dark) : (logo = Store_light);
@@ -29,7 +29,7 @@ const NavBar = (/*{ onSearch }: Props */) => {
       <Box marginTop={2} flex={"1"}>
         <SearchInput
           onSearch={(search) => {
-            /*onSearch(search);*/
+            onSearch(search);
           }}
         ></SearchInput>
       </Box>

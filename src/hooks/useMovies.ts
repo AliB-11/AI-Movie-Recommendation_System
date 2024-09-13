@@ -1,5 +1,6 @@
 import useData from "./useData";
 import { GenreObjects } from "./useGenres";
+import useSearch from "./useSearch";
 
 export interface MovieObjects {
   id: number;
@@ -11,11 +12,17 @@ export interface MovieObjects {
 
 
 
-const useMovies = (selectedGenre: GenreObjects | null) => {
+const useMovies = (selectedGenre: GenreObjects | null, searchText :string | null, endpoint:string) => {
 
-  const genre_name = (selectedGenre?.id)?.toString()
+  if (endpoint === '/discover/movie') { 
+    const genre_name = (selectedGenre?.id)?.toString()
+    return useData<MovieObjects>(endpoint, {params: {with_genres:genre_name}}, [selectedGenre?.id])
+  } else { 
+    const search = (searchText)?.toString()
+    return useSearch<MovieObjects>('/search/movie', {params: {query:search}}, [searchText])
+  }
 
-  return useData<MovieObjects>('/discover/movie', {params: {with_genres:genre_name}}, [selectedGenre?.id])
+
 }
 
 export default useMovies;

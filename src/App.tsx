@@ -7,6 +7,9 @@ import { GenreObjects } from "./hooks/useGenres";
 
 function App() {
   const [genre, setGenre] = useState<GenreObjects | null>(null);
+  const [search, setSearch] = useState<string | null>(null);
+
+  console.log(search);
 
   return (
     <Grid
@@ -20,7 +23,7 @@ function App() {
       }}
     >
       <GridItem area="nav">
-        <NavBar></NavBar>
+        <NavBar onSearch={(searchText) => setSearch(searchText)}></NavBar>
       </GridItem>
       <Show above="lg">
         <GridItem area="aside" paddingLeft={"20px"}>
@@ -28,7 +31,7 @@ function App() {
         </GridItem>
       </Show>
       <GridItem area="main">
-        <MovieGrid selectedGenre={genre}></MovieGrid>
+        <MovieGrid selectedGenre={genre} searchText={search}></MovieGrid>
       </GridItem>
     </Grid>
   );
