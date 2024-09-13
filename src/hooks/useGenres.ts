@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import apiClient from "../services/api-client";
 import { MovieObjects } from "./useMovies";
 
-interface GenreObjects{
+export interface GenreObjects{
   id: number, 
   name: string
 }

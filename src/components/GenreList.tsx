@@ -6,11 +6,15 @@ import {
   List,
   ListItem,
 } from "@chakra-ui/react";
-import useGenres from "../hooks/useGenres";
+import useGenres, { GenreObjects } from "../hooks/useGenres";
 import Genreskeleton from "./GenresSkeleton";
 import { useState } from "react";
 
-const GenreList = () => {
+interface Props {
+  onSelectGenre: (genre: GenreObjects) => void;
+}
+
+const GenreList = ({ onSelectGenre }: Props) => {
   const { data, isLoading, error } = useGenres();
 
   const [highlight, sethighlight] = useState(0);
@@ -42,6 +46,10 @@ const GenreList = () => {
                 variant="link"
                 fontWeight={setFontWeight(genre.id)}
                 fontSize={"md"}
+                onClick={() => {
+                  sethighlight(genre.id);
+                  onSelectGenre(genre);
+                }}
               >
                 {genre.name}
               </Button>

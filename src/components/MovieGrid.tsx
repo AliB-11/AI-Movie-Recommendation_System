@@ -1,10 +1,15 @@
 import { SimpleGrid, Text } from "@chakra-ui/react";
-import useMovies from "../hooks/useMovies";
 import MovieCard from "./MovieCard";
 import MovieSkeleton from "./MovieSkeleton";
+import useMovies from "../hooks/useMovies";
+import { GenreObjects } from "../hooks/useGenres";
 
-const MovieGrid = () => {
-  const { data, error, isLoading } = useMovies();
+interface Props {
+  selectedGenre: GenreObjects | null;
+}
+
+const MovieGrid = ({ selectedGenre }: Props) => {
+  const { data, error, isLoading } = useMovies(selectedGenre);
 
   const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]; //map 6 skeletons
 

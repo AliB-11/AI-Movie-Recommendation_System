@@ -3,8 +3,11 @@ import NavBar from "./components/NavBar";
 import { useEffect, useState } from "react";
 import MovieGrid from "./components/MovieGrid";
 import GenreList from "./components/GenreList";
+import { GenreObjects } from "./hooks/useGenres";
 
 function App() {
+  const [genre, setGenre] = useState<GenreObjects | null>(null);
+
   return (
     <Grid
       templateAreas={{
@@ -21,11 +24,11 @@ function App() {
       </GridItem>
       <Show above="lg">
         <GridItem area="aside" paddingLeft={"20px"}>
-          <GenreList />
+          <GenreList onSelectGenre={(genre) => setGenre(genre)} />
         </GridItem>
       </Show>
       <GridItem area="main">
-        <MovieGrid></MovieGrid>
+        <MovieGrid selectedGenre={genre}></MovieGrid>
       </GridItem>
     </Grid>
   );
