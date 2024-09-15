@@ -1,13 +1,20 @@
-import { Grid, GridItem, HStack, Show } from "@chakra-ui/react";
+import { Grid, GridItem, HStack, Show, VStack } from "@chakra-ui/react";
 import NavBar from "./components/NavBar";
 import { useEffect, useState } from "react";
 import MovieGrid from "./components/MovieGrid";
 import GenreList from "./components/GenreList";
 import { GenreObjects } from "./hooks/useGenres";
 import Heading from "./components/Heading";
+import Filter from "./components/Filter";
+import { Order } from "./components/Filter";
+
+export interface MovieQuery {
+  genre: GenreObjects;
+  filter: Order;
+}
 
 function App() {
-  const [genre, setGenre] = useState<GenreObjects | null>(null);
+  const [movieQuery, setMovieQuery] = useState<MovieQuery>({} as MovieQuery);
   const [search, setSearch] = useState<string | null>(null);
 
   console.log(search);
@@ -30,17 +37,25 @@ function App() {
         <GridItem area="aside" paddingLeft={"20px"}>
           <GenreList
             onSelectGenre={(genre) => {
-              setGenre(genre);
+              setMovieQuery({ ...movieQuery, genre });
               setSearch(null);
             }}
           />
         </GridItem>
       </Show>
       <GridItem area="main">
-        <HStack marginX={5} marginBottom={4}>
-          <Heading></Heading>
-        </HStack>
-        <MovieGrid selectedGenre={genre} searchText={search}></MovieGrid>
+        <VStack align={"flex-start"} spacing={4} marginX={6}>
+          <HStack>
+            <Heading></Heading>
+          </HStack>
+          <HStack marginBottom={4}>
+            <Filter
+              setOrder={(filter) => setMovieQuery({ ...movieQuery, filter })}
+              newOrder={movieQuery.filter}
+            ></Filter>
+          </HStack>
+        </VStack>
+        <MovieGrid selectedParams={movieQuery} searchText={search}></MovieGrid>
       </GridItem>
     </Grid>
   );

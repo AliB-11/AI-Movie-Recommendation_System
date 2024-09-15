@@ -3,13 +3,14 @@ import MovieCard from "./MovieCard";
 import MovieSkeleton from "./MovieSkeleton";
 import useMovies from "../hooks/useMovies";
 import { GenreObjects } from "../hooks/useGenres";
+import { MovieQuery } from "../App";
 
 interface Props {
-  selectedGenre: GenreObjects | null;
+  selectedParams: MovieQuery | null;
   searchText: string | null;
 }
 
-const MovieGrid = ({ selectedGenre, searchText }: Props) => {
+const MovieGrid = ({ selectedParams, searchText }: Props) => {
   let endpoint;
 
   if (searchText) {
@@ -19,7 +20,7 @@ const MovieGrid = ({ selectedGenre, searchText }: Props) => {
   }
 
   const { data, error, isLoading } = useMovies(
-    selectedGenre,
+    selectedParams,
     searchText,
     endpoint
   );
