@@ -1,9 +1,23 @@
 import { Text } from "@chakra-ui/react";
+import { MovieQuery } from "../App";
+import MovieCard from "./MovieCard";
 
-const Heading = () => {
+interface Props {
+  movieObject: MovieQuery;
+  searchText: string | null;
+}
+
+const Heading = ({ searchText, movieObject }: Props) => {
+  const searchtitle = searchText ? "Search" : null;
+  const filterlabel = [
+    movieObject?.filter?.label,
+    " ",
+    movieObject?.genre?.name,
+  ];
+
   return (
     <Text fontSize={"50"} fontWeight={"700"}>
-      Movies
+      {searchtitle ? searchtitle : filterlabel.map((filter) => filter)} Movies
     </Text>
   );
 };

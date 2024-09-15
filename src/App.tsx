@@ -46,7 +46,7 @@ function App() {
       <GridItem area="main">
         <VStack align={"flex-start"} spacing={4} marginX={6}>
           <HStack>
-            <Heading></Heading>
+            <Heading movieObject={movieQuery} searchText={search}></Heading>
           </HStack>
           <HStack marginBottom={4}>
             <Filter

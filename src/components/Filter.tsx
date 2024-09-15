@@ -14,8 +14,8 @@ interface Props {
 const Filter = ({ setOrder, newOrder }: Props) => {
   const filter = [
     { value: "", label: "Recently Popular" },
-    { value: "revenue.desc", label: "Box office revenue" },
-    { value: "vote_count.desc", label: "Average rating" },
+    { value: "revenue.desc", label: "Blockbuster" },
+    { value: "vote_count.desc", label: "Top-rated" },
   ];
 
   return (

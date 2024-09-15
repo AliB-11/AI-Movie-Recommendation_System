@@ -17,7 +17,7 @@ const useMovies = (selectedParams: MovieQuery | null, searchText :string | null,
 
   if (endpoint === '/discover/movie') { 
     const genre_name = (selectedParams?.genre?.id)?.toString();
-    return useData<MovieObjects>(endpoint, {params: {with_genres:genre_name, sort_by:selectedParams?.filter?.value}}, [selectedParams])
+    return useData<MovieObjects>(endpoint, {params: {with_genres:genre_name, sort_by:selectedParams?.filter?.value, page:1}}, [selectedParams])
   } else { 
     const search = (searchText)?.toString()
     return useSearch<MovieObjects>('/search/movie', {params: {query:search}}, [searchText])
