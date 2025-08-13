@@ -3,6 +3,12 @@ import axios from "axios"
 const BASE_URL = "https://api.themoviedb.org/3";
 const api_key = "17927fc242e173b0e72abd101fafbec3"
 
+
+export interface fetchResponse<T>{ 
+  results: T[]
+}
+
+
 export default axios.create({
   baseURL: BASE_URL,
   headers: {

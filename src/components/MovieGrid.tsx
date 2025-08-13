@@ -29,7 +29,7 @@ const MovieGrid = ({ selectedParams, searchText }: Props) => {
 
   return (
     <>
-      {error && <Text>{error}</Text>}
+      {error && <Text>{error.message}</Text>}
 
       <SimpleGrid
         spacing={8}
@@ -38,7 +38,7 @@ const MovieGrid = ({ selectedParams, searchText }: Props) => {
       >
         {isLoading
           ? skeletons.map((skeleton) => <MovieSkeleton key={skeleton} />)
-          : data.map((movie) => (
+          : data?.map((movie) => (
               <MovieCard key={movie.id} movie={movie}></MovieCard>
             ))}
       </SimpleGrid>

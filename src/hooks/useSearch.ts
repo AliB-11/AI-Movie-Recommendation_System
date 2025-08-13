@@ -1,12 +1,8 @@
-import apiClient from "../services/api-client";
+import apiClient, { fetchResponse } from "../services/api-client";
 import { useEffect, useState } from "react";
 import React from "react";
 import { Text } from "@chakra-ui/react";
 import { AxiosRequestConfig, CanceledError } from "axios";
-
-interface fetchResponse<T>{ 
-  results: T[]
-}
 
 
 const delay = (ms:number) => new Promise( resolve => setTimeout(resolve, ms));

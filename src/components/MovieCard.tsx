@@ -14,7 +14,7 @@ const MovieCard = ({ movie }: Props) => {
       key={movie.title}
       borderRadius={7}
       overflow={"hidden"}
-      width={"190px"}
+      width={"185px"}
     >
       <Image src={getImage(movie.poster_path)} height={"280px"} />
       <CardBody>

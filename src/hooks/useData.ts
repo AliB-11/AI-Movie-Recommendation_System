@@ -1,7 +1,5 @@
 import apiClient from "../services/api-client";
 import { useEffect, useState } from "react";
-import React from "react";
-import { Text } from "@chakra-ui/react";
 import { AxiosRequestConfig, CanceledError } from "axios";
 
 interface fetchResponse<T>{ 

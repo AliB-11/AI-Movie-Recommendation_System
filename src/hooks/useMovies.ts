@@ -1,7 +1,6 @@
+import { useQuery } from "@tanstack/react-query";
 import { MovieQuery } from "../App";
-import useData from "./useData";
-import { GenreObjects } from "./useGenres";
-import useSearch from "./useSearch";
+import apiClient from "../services/api-client";
 
 export interface MovieObjects {
   id: number;
@@ -11,16 +10,39 @@ export interface MovieObjects {
 
 }
 
+interface MovieResponse{
+  results: MovieObjects[]
+}
+
 
 
 const useMovies = (selectedParams: MovieQuery | null, searchText :string | null, endpoint:string) => {
 
   if (endpoint === '/discover/movie') { 
     const genre_name = (selectedParams?.genre?.id)?.toString();
-    return useData<MovieObjects>(endpoint, {params: {with_genres:genre_name, sort_by:selectedParams?.filter?.value, page:1}}, [selectedParams])
+    return useQuery<MovieObjects[],Error>({
+      queryKey: ['movies', selectedParams],
+      enabled: !!selectedParams, // will not run until selectedParams is truthy
+      queryFn: ()=> 
+        apiClient.get<MovieResponse>(endpoint,{params: {with_genres:genre_name, sort_by:selectedParams?.filter?.value, page:1}}).then(res=>res.data.results)
+    })
+
+
+
+    //return useData<MovieObjects>(endpoint, {params: {with_genres:genre_name, sort_by:selectedParams?.filter?.value, page:1}}, [selectedParams])
   } else { 
     const search = (searchText)?.toString()
-    return useSearch<MovieObjects>('/search/movie', {params: {query:search}}, [searchText])
+    return useQuery<MovieObjects[],Error>({
+      queryKey: ['searchMovies',searchText], 
+      enabled: !!searchText, // only runs when you actually have text
+      queryFn: () => apiClient.get<MovieResponse>('/search/movie', {params: {query:search}}).then(res=>res.data.results)
+
+    })
+
+
+
+
+  // return useSearch<MovieObjects>('/search/movie', {params: {query:search}}, [searchText])
   }
 
 
