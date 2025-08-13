@@ -1,9 +1,8 @@
 import { SimpleGrid, Text } from "@chakra-ui/react";
+import { MovieQuery } from "../App";
+import useMovies from "../hooks/useMovies";
 import MovieCard from "./MovieCard";
 import MovieSkeleton from "./MovieSkeleton";
-import useMovies from "../hooks/useMovies";
-import { GenreObjects } from "../hooks/useGenres";
-import { MovieQuery } from "../App";
 
 interface Props {
   selectedParams: MovieQuery | null;

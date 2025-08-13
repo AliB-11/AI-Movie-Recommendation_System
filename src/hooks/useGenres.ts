@@ -1,8 +1,6 @@
-import { CanceledError } from "axios";
-import { useState, useEffect } from "react";
-import apiClient from "../services/api-client";
-import genres from "../data/genres";
 import { useQuery } from "@tanstack/react-query";
+import genres from "../data/genres";
+import APIClient from "../services/api-client";
 
 
 export interface GenreObjects{
@@ -14,12 +12,13 @@ interface fetchGenresResponse{
   genres: GenreObjects[]
 }
 
+const apiClient = new APIClient<GenreObjects>('/genre/movie/list', 'genres')
 
 const delay = (ms:number) => new Promise( resolve => setTimeout(resolve, ms));
 
 const useGenres = () => useQuery<GenreObjects[]>({
   queryKey:['genres'],
-  queryFn:()=>apiClient.get<fetchGenresResponse>('/genre/movie/list').then(res=>res.data.genres),
+  queryFn: apiClient.getAll,
   staleTime: 24*60*60*1000, //24hrs
   initialData: genres,
 })

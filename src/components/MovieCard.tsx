@@ -1,6 +1,5 @@
-import React from "react";
-import { MovieObjects } from "../hooks/useMovies";
 import { Card, CardBody, Heading, HStack, Image } from "@chakra-ui/react";
+import { MovieObjects } from "../hooks/useMovies";
 import getImage from "../services/image-url";
 import Rating from "./Rating";
 
