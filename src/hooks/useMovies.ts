@@ -1,7 +1,7 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { MovieQuery } from "../App";
-
-import APIClient, { APIClientMovie, fetchMovieResponse } from "../services/api-client";
+import ms from "ms";
+import { APIClientMovie, fetchMovieResponse } from "../services/api-client";
 
 export interface MovieObjects {
   id: number;
@@ -32,7 +32,7 @@ const useMovies = (selectedParams: MovieQuery | null, searchText :string | null,
           getNextPageParam:(lastPage, allPages) => {
             return  (lastPage.total_pages >= allPages.length + 1 ? allPages.length + 1 : undefined);
           },
-          staleTime: 24 * 60 * 60 * 1000 //24hrs
+          staleTime: ms('24')
 
     })
 
