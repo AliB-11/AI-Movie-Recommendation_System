@@ -8,10 +8,6 @@ export interface GenreObjects{
   name: string
 }
 
-interface fetchGenresResponse{ 
-  genres: GenreObjects[]
-}
-
 const apiClient = new APIClient<GenreObjects>('/genre/movie/list', 'genres')
 
 const delay = (ms:number) => new Promise( resolve => setTimeout(resolve, ms));
@@ -28,7 +24,9 @@ export default useGenres
 
 
 
-
+// interface fetchGenresResponse{ 
+//   genres: GenreObjects[]
+// }
 
 // const [data, setData] = useState<GenreObjects[]>([]);
   // const [error, setError] = useState("");

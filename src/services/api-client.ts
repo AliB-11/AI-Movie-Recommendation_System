@@ -4,18 +4,15 @@ const BASE_URL = "https://api.themoviedb.org/3";
 const api_key = "17927fc242e173b0e72abd101fafbec3"
 
 
-export interface fetchResponse<T>{ 
-  [key: string]: T[]
+export interface fetchResponse<T> { 
+  [key: string]:  T[];
 }
 
+export interface fetchMovieResponse<T>{
+  results: T[];
+  total_pages: number;
 
-// export default axios.create({
-//   baseURL: BASE_URL,
-//   headers: {
-//     Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxNzkyN2ZjMjQyZTE3M2IwZTcyYWJkMTAxZmFmYmVjMyIsIm5iZiI6MTcyNjA2Mzg2NC41MDEzNDIsInN1YiI6IjY2YzUzMjkzZDkwMDdiODBlNzM5NmFkZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.D6wrcSJDGlJf1t7qoh90sWXZlnbOthapoxiy5PNPjcY'
-//   }
-
-// })
+}
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
@@ -41,4 +38,20 @@ class APIClient<T>{
   }
 }
 
-export default APIClient
+
+export class APIClientMovie<T>{
+    endpoint: string
+
+   constructor(endpoint:string){
+    this.endpoint = endpoint;
+    
+  }
+
+
+  getAll = (config: AxiosRequestConfig)=>{
+    return axiosInstance.get<fetchMovieResponse<T>>(this.endpoint, config).then(res=>res.data)
+  }
+}
+
+export default APIClient;
+

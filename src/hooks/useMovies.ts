@@ -1,68 +1,59 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { MovieQuery } from "../App";
 
-import APIClient from "../services/api-client";
+import APIClient, { APIClientMovie, fetchMovieResponse } from "../services/api-client";
 
 export interface MovieObjects {
   id: number;
   title: string;
   vote_average: number;
   poster_path: string;
-
-}
-
-interface MovieResponse{
-  results: MovieObjects[]
 }
 
 
-const apiClient = new APIClient<MovieObjects>('/discover/movie', 'results');
-const apiClientSearch = new APIClient<MovieObjects>('/search/movie', 'results');
+const apiClient = new APIClientMovie<MovieObjects>('/discover/movie');
+const apiClientSearch = new APIClientMovie<MovieObjects>('/search/movie');
+
+
 
 
 const useMovies = (selectedParams: MovieQuery | null, searchText :string | null, endpoint:string) => {
 
   if (endpoint === '/discover/movie') { 
     const genre_name = (selectedParams?.genre?.id)?.toString();
-    return useQuery<MovieObjects[],Error>({
+    return useInfiniteQuery<fetchMovieResponse<MovieObjects>,Error>({
       queryKey: ['movies', selectedParams],
       enabled: !!selectedParams, // will not run until selectedParams is truthy
-      queryFn: () => apiClient.getAll({
+      queryFn: ({ pageParam = 1}) => apiClient.getAll({
         params: {
           with_genres:genre_name, 
           sort_by:selectedParams?.filter?.value, 
-          page:1}})
+          page: pageParam}}),
+          getNextPageParam:(lastPage, allPages) => {
+            return  (lastPage.total_pages >= allPages.length + 1 ? allPages.length + 1 : undefined);
+          }
 
-
-
-
-      // ()=> 
-      //   apiClient.get<MovieResponse>(endpoint,{params: {with_genres:genre_name, sort_by:selectedParams?.filter?.value, page:1}}).then(res=>res.data.results)
     })
 
-
-
-    //return useData<MovieObjects>(endpoint, {params: {with_genres:genre_name, sort_by:selectedParams?.filter?.value, page:1}}, [selectedParams])
   } else { 
     const search = (searchText)?.toString()
-    return useQuery<MovieObjects[],Error>({
+    return useInfiniteQuery<fetchMovieResponse<MovieObjects>,Error>({
       queryKey: ['searchMovies',searchText], 
       enabled: !!searchText, // only runs when you actually have text
-      queryFn: () => apiClientSearch.getAll({params: {query:search}})
-
-
-
-      // () => apiClient.get<MovieResponse>('/search/movie', {params: {query:search}}).then(res=>res.data.results)
-
+      queryFn: ({pageParam = 1}) => apiClientSearch.getAll({
+        params:{ 
+          query:search,
+          page: pageParam}}),
+          getNextPageParam:(lastPage, allPages) => {
+            return  (lastPage.total_pages >= allPages.length + 1 ? allPages.length + 1 : undefined);
+          }
     })
-
-
-
-
-  // return useSearch<MovieObjects>('/search/movie', {params: {query:search}}, [searchText])
+  
   }
-
-
 }
 
 export default useMovies;
+
+
+//return useData<MovieObjects>(endpoint, {params: {with_genres:genre_name, sort_by:selectedParams?.filter?.value, page:1}}, [selectedParams])
+// return useSearch<MovieObjects>('/search/movie', {params: {query:search}}, [searchText])
