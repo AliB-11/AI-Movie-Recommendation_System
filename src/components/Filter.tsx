@@ -1,19 +1,22 @@
 import { BsChevronDown } from "react-icons/bs";
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+import useMovieQueryStore from "../store";
 
 export interface Order {
   value: string;
   label: string;
 }
 
-interface Props {
-  setOrder: (order: Order) => void;
-  newOrder: Order | null;
-}
+// interface Props {
+//   setOrder: (order: Order) => void;
+//   newOrder: Order | null;
+// }
 
-const Filter = ({ setOrder, newOrder }: Props) => {
+const Filter = () => {
+  const { setSortOrder } = useMovieQueryStore();
+  const movieQuery = useMovieQueryStore((s) => s.movieQuery);
   const filter = [
-    { value: "", label: "Recently Popular" },
+    { value: "popularity.desc", label: "Recently Popular" },
     { value: "revenue.desc", label: "Blockbuster" },
     { value: "vote_count.desc", label: "Top-rated" },
   ];
@@ -21,11 +24,11 @@ const Filter = ({ setOrder, newOrder }: Props) => {
   return (
     <Menu>
       <MenuButton as={Button} rightIcon={<BsChevronDown />}>
-        Filter by: {newOrder?.label || "Recently Popular"}
+        Filter by: {movieQuery.filter?.label || "Recently Popular"}
       </MenuButton>
       <MenuList>
         {filter.map((order) => (
-          <MenuItem key={order.value} onClick={() => setOrder(order)}>
+          <MenuItem key={order.value} onClick={() => setSortOrder(order)}>
             {order.label}
           </MenuItem>
         ))}

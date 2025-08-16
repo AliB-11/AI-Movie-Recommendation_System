@@ -1,26 +1,33 @@
 import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
-import { useRef } from "react";
+import { useState, useEffect } from "react";
 import { BsSearch } from "react-icons/bs";
+import useMovieQueryStore from "../store";
 
-interface Props {
-  onSearch: (search: string) => void;
-}
+const SearchInput = () => {
+  const { movieQuery, setSearchText } = useMovieQueryStore();
 
-const SearchInput = ({ onSearch }: Props) => {
-  const ref = useRef<HTMLInputElement>(null);
+  // Local state for typing
+  const [localSearch, setLocalSearch] = useState(movieQuery.searchText || "");
+
+  // Sync local input with store when searchText changes (e.g., cleared by genre/sort)
+  useEffect(() => {
+    setLocalSearch(movieQuery.searchText || "");
+  }, [movieQuery.searchText]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSearchText(localSearch.trim() || undefined);
+  };
+
   return (
-    <form
-      onSubmit={(event) => {
-        event.preventDefault();
-        if (ref.current) onSearch(ref.current.value);
-      }}
-    >
+    <form onSubmit={handleSubmit}>
       <InputGroup>
         <Input
-          ref={ref}
+          value={localSearch}
+          onChange={(e) => setLocalSearch(e.target.value)}
           borderRadius={20}
           placeholder=" Search movies..."
-        ></Input>
+        />
         <InputLeftElement children={<BsSearch />} />
       </InputGroup>
     </form>

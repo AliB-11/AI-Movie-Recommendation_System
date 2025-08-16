@@ -7,14 +7,10 @@ import { GenreObjects } from "./hooks/useGenres";
 import Heading from "./components/Heading";
 import Filter from "./components/Filter";
 import { Order } from "./components/Filter";
-
-export interface MovieQuery {
-  genre: GenreObjects;
-  filter: Order;
-}
+import useMovieQueryStore, { MovieQuery } from "./store";
 
 function App() {
-  const [movieQuery, setMovieQuery] = useState<MovieQuery>({} as MovieQuery);
+  // const [movieQuery, setMovieQuery] = useState<MovieQuery>({} as MovieQuery);
   const [search, setSearch] = useState<string | null>(null);
 
   console.log(search);
@@ -31,34 +27,30 @@ function App() {
       }}
     >
       <GridItem area="nav">
-        <NavBar onSearch={(searchText) => setSearch(searchText)}></NavBar>
+        <NavBar></NavBar>
       </GridItem>
       <Show above="lg">
         <GridItem area="aside" paddingLeft={"15px"}>
-          <GenreList
-            onSelectGenre={(genre) => {
-              setMovieQuery({ ...movieQuery, genre });
-              setSearch(null);
-            }}
-          />
+          <GenreList />
         </GridItem>
       </Show>
       <GridItem area="main">
         <VStack align={"flex-start"} spacing={4} marginX={6}>
           <HStack>
-            <Heading movieObject={movieQuery} searchText={search}></Heading>
+            <Heading></Heading>
           </HStack>
           <HStack marginBottom={4}>
-            <Filter
-              setOrder={(filter) => setMovieQuery({ ...movieQuery, filter })}
-              newOrder={movieQuery.filter}
-            ></Filter>
+            <Filter></Filter>
           </HStack>
         </VStack>
-        <MovieGrid selectedParams={movieQuery} searchText={search}></MovieGrid>
+        <MovieGrid></MovieGrid>
       </GridItem>
     </Grid>
   );
 }
 
 export default App;
+
+//Nav Bar:    //onSearch={(searchText) => setSearch(searchText)}
+
+//Filter: //setOrder={(filter) => setMovieQuery({ ...movieQuery, filter })} newOrder={movieQuery.filter}

@@ -1,19 +1,18 @@
 import { Text } from "@chakra-ui/react";
-import { MovieQuery } from "../App";
+
 import MovieCard from "./MovieCard";
+import useMovieQueryStore from "../store";
 
-interface Props {
-  movieObject: MovieQuery;
-  searchText: string | null;
-}
+// interface Props {
+//   movieObject: MovieQuery;
+//   searchText: string | null;
+// }
 
-const Heading = ({ searchText, movieObject }: Props) => {
-  const searchtitle = searchText ? "Search" : null;
-  const filterlabel = [
-    movieObject?.filter?.label,
-    " ",
-    movieObject?.genre?.name,
-  ];
+const Heading = () => {
+  const { movieQuery } = useMovieQueryStore();
+
+  const searchtitle = movieQuery.searchText ? "Search" : null;
+  const filterlabel = [movieQuery?.filter?.label, " ", movieQuery?.genre?.name];
 
   return (
     <Text fontSize={"50"} fontWeight={"700"}>

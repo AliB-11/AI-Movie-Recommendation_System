@@ -5,11 +5,7 @@ import SearchInput from "./SearchInput";
 import store_dark from "../assets/Store_dark.png";
 import Store_light from "../assets/Store_light.png";
 
-interface Props {
-  onSearch: (search: string) => void;
-}
-
-const NavBar = ({ onSearch }: Props) => {
+const NavBar = () => {
   const { toggleColorMode, colorMode } = useColorMode();
   let logo = store_dark;
   colorMode === "dark" ? (logo = store_dark) : (logo = Store_light);
@@ -27,11 +23,7 @@ const NavBar = ({ onSearch }: Props) => {
         <Image src={logo} height={"23px"} marginTop={"7px"}></Image>
       </HStack>
       <Box marginTop={2} flex={"1"}>
-        <SearchInput
-          onSearch={(search) => {
-            onSearch(search);
-          }}
-        ></SearchInput>
+        <SearchInput></SearchInput>
       </Box>
       <HStack marginLeft={6} marginTop={3}>
         <ColorModeSwitch></ColorModeSwitch>
@@ -41,3 +33,5 @@ const NavBar = ({ onSearch }: Props) => {
 };
 
 export default NavBar;
+
+//searchInput:  onSearch={(search) => { onSearch(search); }}

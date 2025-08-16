@@ -1,20 +1,17 @@
 import { SimpleGrid, Spinner, Text } from "@chakra-ui/react";
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { MovieQuery } from "../App";
+
 import useMovies from "../hooks/useMovies";
 import MovieCard from "./MovieCard";
 import MovieSkeleton from "./MovieSkeleton";
+import useMovieQueryStore, { MovieQuery } from "../store";
 
-interface Props {
-  selectedParams: MovieQuery | null;
-  searchText: string | null;
-}
-
-const MovieGrid = ({ selectedParams, searchText }: Props) => {
+const MovieGrid = () => {
+  const { movieQuery } = useMovieQueryStore();
   let endpoint;
 
-  if (searchText) {
+  if (movieQuery.searchText) {
     endpoint = "/search/movie";
   } else {
     endpoint = "/discover/movie";
@@ -27,7 +24,7 @@ const MovieGrid = ({ selectedParams, searchText }: Props) => {
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
-  } = useMovies(selectedParams, searchText, endpoint);
+  } = useMovies(movieQuery, movieQuery.searchText, endpoint);
 
   const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]; //map 6 skeletons
 

@@ -1,7 +1,8 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { MovieQuery } from "../App";
+
 import ms from "ms";
 import { APIClientMovie, fetchMovieResponse } from "../services/api-client";
+import { MovieQuery } from "../store";
 
 export interface MovieObjects {
   id: number;
@@ -16,14 +17,14 @@ const apiClientSearch = new APIClientMovie<MovieObjects>('/search/movie');
 
 
 
-
-const useMovies = (selectedParams: MovieQuery | null, searchText :string | null, endpoint:string) => {
+const useMovies = (selectedParams: MovieQuery | undefined, searchText :string | undefined, endpoint:string) => {
+  
 
   if (endpoint === '/discover/movie') { 
     const genre_name = (selectedParams?.genre?.id)?.toString();
     return useInfiniteQuery<fetchMovieResponse<MovieObjects>,Error>({
       queryKey: ['movies', selectedParams],
-      enabled: !!selectedParams, // will not run until selectedParams is truthy
+      enabled: true, // will not run until selectedParams is truthy
       queryFn: ({ pageParam = 1}) => apiClient.getAll({
         params: {
           with_genres:genre_name, 
@@ -52,8 +53,23 @@ const useMovies = (selectedParams: MovieQuery | null, searchText :string | null,
   
   }
 }
-
 export default useMovies;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //return useData<MovieObjects>(endpoint, {params: {with_genres:genre_name, sort_by:selectedParams?.filter?.value, page:1}}, [selectedParams])

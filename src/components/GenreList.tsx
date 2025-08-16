@@ -9,13 +9,13 @@ import {
 import useGenres, { GenreObjects } from "../hooks/useGenres";
 import Genreskeleton from "./GenresSkeleton";
 import { useState } from "react";
+import useMovieQueryStore from "../store";
 
-interface Props {
-  onSelectGenre: (genre: GenreObjects) => void;
-}
-
-const GenreList = ({ onSelectGenre }: Props) => {
+const GenreList = () => {
   const { data, isLoading, error } = useGenres();
+
+  const genre = useMovieQueryStore((s) => s.setGenre);
+  const onSelectGenre = useMovieQueryStore((s) => s.setGenre);
 
   const [highlight, sethighlight] = useState(0);
 
