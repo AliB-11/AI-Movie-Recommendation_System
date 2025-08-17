@@ -11,7 +11,7 @@ import useMovieQueryStore from "../store";
 const Heading = () => {
   const { movieQuery } = useMovieQueryStore();
 
-  const searchtitle = movieQuery.searchText ? "Search" : null;
+  const searchtitle = movieQuery.searchText ? movieQuery.searchText : null;
   const filterlabel = [movieQuery?.filter?.label, " ", movieQuery?.genre?.name];
 
   return (

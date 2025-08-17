@@ -51,6 +51,10 @@ export class APIClientMovie<T>{
   getAll = (config: AxiosRequestConfig)=>{
     return axiosInstance.get<fetchMovieResponse<T>>(this.endpoint, config).then(res=>res.data)
   }
+
+  get = (id:string | undefined)=> {
+    return axiosInstance.get<T>(this.endpoint + '/' + id).then(res=>res.data)
+  }
 }
 
 export default APIClient;
