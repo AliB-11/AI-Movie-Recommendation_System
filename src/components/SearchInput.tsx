@@ -2,6 +2,7 @@ import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { BsSearch } from "react-icons/bs";
 import useMovieQueryStore from "../store";
+import { useNavigate } from "react-router-dom";
 
 const SearchInput = () => {
   const { movieQuery, setSearchText } = useMovieQueryStore();
@@ -17,8 +18,11 @@ const SearchInput = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSearchText(localSearch.trim() || undefined);
+    if (localSearch) {
+      navigate("/");
+    }
   };
-
+  const navigate = useNavigate();
   return (
     <form onSubmit={handleSubmit}>
       <InputGroup>

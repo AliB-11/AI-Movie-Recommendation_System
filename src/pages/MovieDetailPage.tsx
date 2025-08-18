@@ -5,6 +5,7 @@ import {
   Heading,
   HStack,
   Image,
+  Show,
   Spinner,
   Text,
   Wrap,
@@ -59,6 +60,7 @@ const MovieDetailPage = () => {
         overflow="hidden"
         paddingX={5}
         mx="auto"
+        height={{ base: "30vh", md: "46vh" }} // responsive height
       >
         <Image
           src={getPoster(movie.backdrop_path)} // request smaller version
@@ -70,17 +72,22 @@ const MovieDetailPage = () => {
         />
         <Box
           position="absolute"
-          bottom="0"
-          left="5"
-          right="0"
+          top={0} // start from top
+          left={5} // start from left edge
+          right={5} // end at right edge
+          bottom={0} // end at bottom
           h="100%"
-          w="97%"
           bgGradient="linear(to-b, transparent 2%, #202020 100%)"
         />
       </Box>
       {/* Movie info */}
-      <HStack align="flex-start" marginX={5}>
-        <Box p={6} flex="2">
+      <HStack
+        align="flex-start"
+        marginX={5}
+        spacing={12}
+        flexDirection={{ base: "column", md: "row" }}
+      >
+        <Box p={6} width={{ base: "100%", md: "77%" }}>
           <Heading mb={4} marginX={2}>
             {movie.title}
           </Heading>
@@ -105,10 +112,12 @@ const MovieDetailPage = () => {
             {/* Release year */}
             <Text>{releaseYear}</Text>
 
-            <Text>{movie.production_companies?.[0]?.name || ""}</Text>
+            <Show above="md">
+              <Text>{movie.production_companies?.[0]?.name || ""}</Text>
 
-            {/* First spoken language */}
-            <Text>{movie.spoken_languages?.[0]?.english_name || ""}</Text>
+              {/* First spoken language */}
+              <Text>{movie.spoken_languages?.[0]?.english_name || ""}</Text>
+            </Show>
           </HStack>
 
           {/* Genres */}
@@ -120,24 +129,25 @@ const MovieDetailPage = () => {
             ))}
           </Wrap>
         </Box>
-        <Box
-          flex="1"
-          w="250px"
-          rounded="md"
-          marginY={6}
-          marginLeft={18}
-          display="flex"
-          justifyContent="center"
-        >
-          <Image
-            src={getImage(movie.poster_path)}
-            alt={movie.title}
-            objectFit="cover"
-            w="37%"
+        <Show above="md">
+          <Box
+            maxWidth="250px"
             rounded="md"
-            h="37%" // keeps aspect ratio ~1.5:1 (poster style)
-          ></Image>
-        </Box>
+            marginY={6}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Image
+              src={getImage(movie.poster_path)}
+              alt={movie.title}
+              objectFit="cover"
+              maxWidth="170px"
+              rounded="md"
+              h="auto"
+            />
+          </Box>
+        </Show>
       </HStack>
     </>
   );
