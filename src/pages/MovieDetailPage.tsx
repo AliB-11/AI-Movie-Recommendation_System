@@ -83,8 +83,8 @@ const MovieDetailPage = () => {
       {/* Movie info */}
       <HStack
         align="flex-start"
-        marginX={5}
-        spacing={12}
+        marginX={9}
+        spacing={10}
         flexDirection={{ base: "column", md: "row" }}
       >
         <Box p={6} width={{ base: "100%", md: "77%" }}>
@@ -142,7 +142,7 @@ const MovieDetailPage = () => {
               src={getImage(movie.poster_path)}
               alt={movie.title}
               objectFit="cover"
-              maxWidth="170px"
+              maxWidth="180px"
               rounded="md"
               h="auto"
             />
