@@ -6,7 +6,8 @@ import {
   List,
   ListItem,
 } from "@chakra-ui/react";
-import useGenres, { GenreObjects } from "../hooks/useGenres";
+import useGenres from "../hooks/useGenres";
+import { GenreObjects } from "../entities/GenreObjects";
 import Genreskeleton from "./GenresSkeleton";
 import { useState } from "react";
 import useMovieQueryStore from "../store";

@@ -3,20 +3,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import ms from "ms";
 import { APIClientMovie, fetchMovieResponse } from "../services/api-client";
 import { MovieQuery } from "../store";
-import { GenreObjects } from "./useGenres";
-
-export interface MovieObjects {
-  id: number;
-  title: string;
-  vote_average: number;
-  poster_path: string;
-  genres: GenreObjects[];
-  overview: string;
-  backdrop_path: string; 
-  release_date: string;
-  runtime: number;
-}
-
+import { MovieObjects } from "../entities/MovieObjects";
 
 const apiClient = new APIClientMovie<MovieObjects>('/discover/movie');
 const apiClientSearch = new APIClientMovie<MovieObjects>('/search/movie');

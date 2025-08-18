@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { Order } from "./components/Filter";
-import { GenreObjects } from "./hooks/useGenres";
+import { GenreObjects } from "./entities/GenreObjects";
 import SearchInput from "./components/SearchInput";
 
 export interface MovieQuery {
