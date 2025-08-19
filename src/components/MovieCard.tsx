@@ -21,12 +21,15 @@ const MovieCard = ({ movie }: Props) => {
           key={movie.title}
           borderRadius={7}
           overflow={"hidden"}
-          width={"185px"}
+          width={{ base: "140px", md: "185px" }} // smaller on phones
         >
-          <Image src={getImage(movie.poster_path)} height={"280px"} />
+          <Image
+            src={getImage(movie.poster_path)}
+            height={{ base: "210px", md: "280px" }}
+          />
           <CardBody>
             <HStack justifyContent={"space-between"}>
-              <Heading fontSize={"lg"} marginTop={2}>
+              <Heading fontSize={{ base: "sm", md: "lg" }} marginTop={2}>
                 {movie.title}
               </Heading>
               <Rating vote_average={movie.vote_average}></Rating>

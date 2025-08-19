@@ -1,4 +1,12 @@
-import { Box, Flex, HStack, Icon, Image, useColorMode } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  HStack,
+  Icon,
+  Image,
+  Show,
+  useColorMode,
+} from "@chakra-ui/react";
 import { BiSolidCameraMovie } from "react-icons/bi";
 import ColorModeSwitch from "./ColorModeSwitch";
 import SearchInput from "./SearchInput";
@@ -19,19 +27,28 @@ const NavBar = () => {
       justifyContent={"space-between"}
       flexDirection={"row"}
     >
-      <HStack marginRight={4} width={115} marginLeft={3} spacing={3}>
+      <HStack
+        marginRight={4}
+        width={{ base: "50px", md: "115px" }}
+        marginLeft={3}
+        spacing={3}
+      >
         <Link to={"/"}>
           <Icon as={BiSolidCameraMovie} boxSize={9} objectFit={"cover"} />
         </Link>
-        <Image src={logo} height={"25px"} marginTop={"1px"}></Image>
+        <Show above="md">
+          <Image src={logo} height={"25px"} marginTop={"1px"}></Image>
+        </Show>
       </HStack>
 
       <Box marginTop={2} flex={"1"}>
         <SearchInput></SearchInput>
       </Box>
-      <HStack marginLeft={6} marginTop={3}>
-        <ColorModeSwitch></ColorModeSwitch>
-      </HStack>
+      <Show above="md">
+        <HStack marginLeft={6} marginTop={3}>
+          <ColorModeSwitch></ColorModeSwitch>
+        </HStack>
+      </Show>
     </Flex>
   );
 };
