@@ -7,11 +7,6 @@ export interface Order {
   label: string;
 }
 
-// interface Props {
-//   setOrder: (order: Order) => void;
-//   newOrder: Order | null;
-// }
-
 const Filter = () => {
   const { setSortOrder } = useMovieQueryStore();
   const movieQuery = useMovieQueryStore((s) => s.movieQuery);

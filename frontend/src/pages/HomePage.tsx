@@ -3,6 +3,7 @@ import Filter from "../components/Filter";
 import GenreList from "../components/GenreList";
 import MovieGrid from "../components/MovieGrid";
 import Heading from "../components/Heading";
+import ReccomendationButton from "../components/ReccomendationButton";
 
 const HomePage = () => {
   return (
@@ -27,8 +28,9 @@ const HomePage = () => {
             <HStack>
               <Heading></Heading>
             </HStack>
-            <HStack marginBottom={4}>
+            <HStack marginBottom={{ base: 4, md: 4 }} gap={{ base: 2, md: 8 }}>
               <Filter></Filter>
+              <ReccomendationButton />
             </HStack>
           </VStack>
           <MovieGrid></MovieGrid>

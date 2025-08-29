@@ -3,7 +3,7 @@ import useSearch from "../hooks/useSearch";
 import { useState } from "react";
 
 const ReccomendationButton = () => {
-  const movieName = "Toy Story 1995";
+  const movieName = "Interstellar 2014";
   const [searchEnabled, setSearchEnabled] = useState(false);
 
   const { data, error, isLoading } = useSearch(movieName, searchEnabled);

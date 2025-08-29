@@ -14,12 +14,20 @@ export interface fetchMovieResponse<T>{
 
 }
 
+export interface searchBackendMovie{
+  movieId: number;
+}
+
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
   headers: {
     Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxNzkyN2ZjMjQyZTE3M2IwZTcyYWJkMTAxZmFmYmVjMyIsIm5iZiI6MTcyNjA2Mzg2NC41MDEzNDIsInN1YiI6IjY2YzUzMjkzZDkwMDdiODBlNzM5NmFkZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.D6wrcSJDGlJf1t7qoh90sWXZlnbOthapoxiy5PNPjcY'
   }
 
+})
+
+const backendAxios = axios.create({
+  baseURL: "http://127.0.0.1:8000", 
 })
 
 
@@ -56,6 +64,24 @@ export class APIClientMovie<T>{
     return axiosInstance.get<T>(this.endpoint + '/' + id).then(res=>res.data)
   }
 }
+
+
+
+export class APIClientSearch{
+  endpoint: string
+
+  constructor(endpoint:string){
+    this.endpoint = endpoint
+  }
+
+  search = (query: String, config?: AxiosRequestConfig) =>{
+    return backendAxios.get<searchBackendMovie>(`${this.endpoint}`, {params: {query}, ...config}). then((res) => res.data);
+  }
+  
+}
+
+
+
 
 export default APIClient;
 

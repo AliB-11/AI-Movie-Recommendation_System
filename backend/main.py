@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Query
+from fastapi.middleware.cors import CORSMiddleware 
 import pandas as pd
 import re
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -6,6 +7,20 @@ from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 
 app = FastAPI()
+
+# ---------------- CORS setup ----------------
+origins = [
+    "http://localhost:5173",  # frontend URL
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,      
+    allow_credentials=True,
+    allow_methods=["*"],        
+    allow_headers=["*"],        
+)
+# --------------------------------------------
 
 # --- Preload movies & train vectorizer (done once at startup) ---
 movies = pd.read_csv("movies.csv")  # keep in backend folder
@@ -23,8 +38,10 @@ def search(title, top_n=5):
 
     exact_matches = movies[movies["clean_title"] == title]
     if not exact_matches.empty:
-        return exact_matches
+        # Exact match exists: return first movieId
+        return int(exact_matches.iloc[0]["movieId"])
 
+    # Fuzzy search
     query_vec = vectorizer.transform([title])
     similarity = cosine_similarity(query_vec, tfidf).flatten()
 
@@ -38,13 +55,13 @@ def search(title, top_n=5):
         similarity += movies["clean_title"].str.contains(year).astype(float) * 0.5
 
     top_index = np.argmax(similarity)
-    return int(movies.iloc[top_index]["movieId"])  # return movieId only
+    return int(movies.iloc[top_index]["movieId"])  # Return as int
 
 
 # --- FastAPI endpoint ---
 @app.get("/search")
 def search_movies(query: str = Query(..., description="Movie title to search")):
-     movie_id = search(query)
+     movie_id = int(search(query))
      return {"movieId": movie_id}
 
     
