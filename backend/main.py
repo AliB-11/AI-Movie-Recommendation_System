@@ -24,11 +24,16 @@ app.add_middleware(
 
 # --- Preload movies & train vectorizer (done once at startup) ---
 movies = pd.read_csv("movies.csv")  # keep in backend folder
+links = pd.read_csv("links.csv")  # contains movieId, imdbId, tmdbId
+recs = pd.read_csv("precomputed_recs.csv")
+
 def clean_title(title):
     return re.sub("[^a-zA-Z0-9 ]", "", title)
 
-movies["clean_title"] = movies["title"].apply(clean_title)
 
+movies["clean_title"] = movies["title"].apply(clean_title)
+# join movies and links so each movie has its tmdbId
+movies = movies.merge(links[["movieId", "tmdbId"]], on="movieId", how="left")
 vectorizer = TfidfVectorizer(ngram_range=(1,2))
 tfidf = vectorizer.fit_transform(movies["clean_title"])
 
@@ -58,10 +63,30 @@ def search(title, top_n=5):
     return int(movies.iloc[top_index]["movieId"])  # Return as int
 
 
+def get_recommendations(movie_id):
+    row = recs[recs["movieId"] == movie_id]
+
+    if row.empty:
+        return []
+
+    rec_tmdb_ids = []
+    for col in row.columns:
+        if "_id" in col:   # assuming your precomputed file stores rec_1_id, rec_2_id, ...
+            rec_movie_id = row.iloc[0][col]
+            if pd.notna(rec_movie_id):
+                # lookup tmdbId
+                match = movies[movies["movieId"] == int(rec_movie_id)]
+                if not match.empty and pd.notna(match.iloc[0]["tmdbId"]):
+                    rec_tmdb_ids.append(int(match.iloc[0]["tmdbId"]))
+
+    return rec_tmdb_ids
+
 # --- FastAPI endpoint ---
 @app.get("/search")
 def search_movies(query: str = Query(..., description="Movie title to search")):
-     movie_id = int(search(query))
-     return {"movieId": movie_id}
+    movie_id = search(query)
+    rec_tmdb_ids = get_recommendations(movie_id)
+    return {"recommendation": rec_tmdb_ids}
 
-    
+
+

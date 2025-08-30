@@ -15,7 +15,7 @@ export interface fetchMovieResponse<T>{
 }
 
 export interface searchBackendMovie{
-  movieId: number;
+  recommendation: number[]
 }
 
 const axiosInstance = axios.create({
