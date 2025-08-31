@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import useMovieId from "../hooks/useMovieId";
+import { useLocation } from "react-router-dom";
 import {
   Box,
   Heading,
@@ -20,6 +21,9 @@ import star5 from "../assets/stars/5_star.png";
 import getImage from "../services/image-url";
 
 const MovieDetailPage = () => {
+  const location = useLocation();
+  const isRecommend = location.pathname.startsWith("/recommend");
+  const isMovies = location.pathname.startsWith("/movies");
   const { id } = useParams();
   const { data: movie, isLoading, error } = useMovieId(id!);
 
@@ -53,33 +57,65 @@ const MovieDetailPage = () => {
   return (
     <>
       {/* Backdrop container */}
-      <Box
-        position="relative"
-        w="95%"
-        h="46vh"
-        overflow="hidden"
-        paddingX={5}
-        mx="auto"
-        height={{ base: "30vh", md: "46vh" }} // responsive height
-      >
-        <Image
-          src={getPoster(movie.backdrop_path)} // request smaller version
-          alt={movie.title}
-          objectFit="cover"
-          objectPosition="50% 20%" //  shift down: crop ~10% from top, rest from bottom
-          w="100%"
-          h="100%"
-        />
+      {isMovies ? (
         <Box
-          position="absolute"
-          top={0} // start from top
-          left={5} // start from left edge
-          right={5} // end at right edge
-          bottom={0} // end at bottom
-          h="100%"
-          bgGradient="linear(to-b, transparent 2%, #202020 100%)"
-        />
-      </Box>
+          position="relative"
+          w="95%"
+          h="46vh"
+          overflow="hidden"
+          paddingX={5}
+          mx="auto"
+          height={{ base: "30vh", md: "46vh" }} // responsive height
+        >
+          <Image
+            src={getPoster(movie.backdrop_path)} // request smaller version
+            alt={movie.title}
+            objectFit="cover"
+            objectPosition="50% 20%" //  shift down: crop ~10% from top, rest from bottom
+            w="100%"
+            h="100%"
+          />
+          <Box
+            position="absolute"
+            top={0} // start from top
+            left={5} // start from left edge
+            right={5} // end at right edge
+            bottom={0} // end at bottom
+            h="100%"
+            bgGradient="linear(to-b, transparent 2%, #202020 100%)"
+          />
+        </Box>
+      ) : (
+        <Box
+          position="relative"
+          w="95%"
+          h="46vh"
+          overflow="hidden"
+          paddingX={5}
+          marginTop={5}
+          mx="auto"
+          height={{ base: "30vh", md: "52vh" }} // responsive height
+        >
+          <Image
+            src={getPoster(movie.backdrop_path)} // request smaller version
+            alt={movie.title}
+            objectFit="cover"
+            objectPosition="50% 20%" //  shift down: crop ~10% from top, rest from bottom
+            w="100%"
+            h="100%"
+          />
+          <Box
+            position="absolute"
+            top={0} // start from top
+            left={5} // start from left edge
+            right={5} // end at right edge
+            bottom={0} // end at bottom
+            h="100%"
+            bgGradient="linear(to-b, transparent 2%, #202020 100%)"
+          />
+        </Box>
+      )}
+
       {/* Movie info */}
       <HStack
         align="flex-start"

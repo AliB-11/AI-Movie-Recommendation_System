@@ -21,6 +21,10 @@ const router = createBrowserRouter([
     element: <ReccomendationPage />,
     errorElement: <ErrorPage />,
   },
+  {
+    path: "/recommend/:id",
+    element: <MovieDetailPage />,
+  },
 ]);
 
 export default router;

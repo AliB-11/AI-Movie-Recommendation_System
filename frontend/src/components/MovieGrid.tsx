@@ -50,7 +50,11 @@ const MovieGrid = () => {
             : data?.pages.map((page, index) => (
                 <React.Fragment key={index}>
                   {page.results.map((movie) => (
-                    <MovieCard key={movie.id} movie={movie}></MovieCard>
+                    <MovieCard
+                      key={movie.id}
+                      movie={movie}
+                      movieEndpoint="/movies/"
+                    ></MovieCard>
                   ))}
                 </React.Fragment>
               ))}

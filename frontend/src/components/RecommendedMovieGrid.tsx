@@ -1,5 +1,4 @@
 import { SimpleGrid } from "@chakra-ui/react";
-import React from "react";
 import MovieCard from "./MovieCard";
 import MovieCardSkeleton from "./MovieSkeleton";
 import { useMoviesByIds } from "../hooks/useMoviesByIds";
@@ -26,7 +25,11 @@ const RecommendedMovieGrid = ({ query }: Props) => {
         ? skeletons.map((skeleton) => <MovieCardSkeleton key={skeleton} />)
         : movieQueries.map((movie) =>
             movie.data ? (
-              <MovieCard key={movie.data.id} movie={movie.data} />
+              <MovieCard
+                key={movie.data.id}
+                movie={movie.data}
+                movieEndpoint="/recommend/"
+              />
             ) : null
           )}
     </SimpleGrid>

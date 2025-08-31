@@ -3,15 +3,21 @@ import RecomendNavBar from "../components/RecomendNavBar";
 import RecommendSearch from "../components/RecommendSearch";
 import { useState } from "react";
 import RecommendedMovieGrid from "../components/RecommendedMovieGrid";
+import { useSearchParams } from "react-router-dom";
 const ReccomendationPage = () => {
-  const [query, setQuery] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get("q") || "";
+
+  const handleSetQuery = (newQuery: string) => {
+    setSearchParams({ q: newQuery });
+  };
 
   return (
     <>
       <RecomendNavBar></RecomendNavBar>
       <Grid>
         <GridItem>
-          <VStack marginTop={5}>
+          <VStack marginTop={3}>
             <Text
               marginTop={15}
               fontSize={{ base: "35", md: "40" }}
@@ -37,8 +43,8 @@ const ReccomendationPage = () => {
                 likely enjoy.
               </Text>
             </Flex>
-            <Flex marginTop={12} width="100%" justify="center">
-              <RecommendSearch setQuery={setQuery}></RecommendSearch>
+            <Flex marginTop={5} width="100%" justify="center">
+              <RecommendSearch setQuery={handleSetQuery}></RecommendSearch>
             </Flex>
 
             {query && <RecommendedMovieGrid query={query} />}

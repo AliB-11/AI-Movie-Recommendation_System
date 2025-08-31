@@ -6,15 +6,16 @@ import { Link } from "react-router-dom";
 
 interface Props {
   movie: MovieObjects;
+  movieEndpoint: string;
 }
 
-const MovieCard = ({ movie }: Props) => {
+const MovieCard = ({ movie, movieEndpoint }: Props) => {
   return (
-    <Link to={"/movies/" + movie.id}>
+    <Link to={movieEndpoint + movie.id}>
       <Box
         _hover={{
           transform: "scale(1.08)",
-          transition: "transform .15s ease-in",
+          transition: "transform .15s ease-in", // "/movies/"
         }}
       >
         <Card
