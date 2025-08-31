@@ -90,3 +90,54 @@ def search_movies(query: str = Query(..., description="Movie title to search")):
 
 
 
+
+
+# --- Recommendation Algorithm ---
+
+def find_similar_movies(movie_id):
+    #Finding reccomenedation from similar users
+    similar_users = ratings[(ratings["movieId"] == movie_id) & (ratings["rating"] >= 4.5)] ["userId"].unique()
+    similar_user_recs = ratings[(ratings["userId"].isin(similar_users)) & (ratings["rating"] >= 4.5)]["movieId"]
+#     similar_users = top_ratings[(top_ratings["movieId"] == movie_id) & (top_ratings["rating"] >= 4.5)]["userId"].unique()
+#     similar_user_recs = top_ratings[(top_ratings["userId"].isin(similar_users)) & (top_ratings["rating"] >= 4.5)]["movieId"]
+    
+   
+    #Over 10% of users reccomend the movie
+    similar_user_recs = similar_user_recs.value_counts() / len(similar_users)
+    similar_user_recs = similar_user_recs[similar_user_recs > .1]
+    
+    #Finding how common the reccoemendation were among all users 
+    all_users = ratings[(ratings["movieId"].isin(similar_user_recs.index)) & (ratings["rating"] >= 4 )]
+#     all_users = top_ratings[(top_ratings["movieId"].isin(similar_user_recs.index)) & (top_ratings["rating"] >= 4)]
+    all_user_recs = all_users["movieId"].value_counts() / len(all_users["userId"].unique())
+    
+    #Generate a score 
+    rec_percentages = pd.concat([similar_user_recs, all_user_recs], axis =1)
+    rec_percentages.columns = ["similar", "all"]
+    rec_percentages["score"] = rec_percentages["similar"] / rec_percentages["all"]
+    
+    base_genres = set(movies.loc[movies["movieId"] == movie_id, "genres"].values[0].split('|'))
+
+    def genre_similarity(candidate_id):
+        candidate_genres = set(movies.loc[movies["movieId"] == candidate_id, "genres"].values[0].split('|'))
+        overlap = len(base_genres & candidate_genres)
+        # Fraction of genres that overlap
+        return overlap / len(base_genres) if len(base_genres) > 0 else 0
+
+    # Apply a small boost to the score
+    rec_percentages["score"] = rec_percentages.apply(
+        lambda row: row["score"] * (1 + 0.1 * genre_similarity(row.name)),
+        axis=1
+    )
+    
+    #Sorting Scores 
+    rec_percentages = rec_percentages.sort_values("score", ascending=False)  
+    
+    #Return top 10 reccomendations and merging with dataset
+    rec_percentages = rec_percentages.head(10).reset_index().merge(
+    movies[['movieId', 'clean_title']],
+    left_on='index',
+    right_on='movieId'
+)
+    
+    return rec_percentages
