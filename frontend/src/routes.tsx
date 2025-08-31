@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage";
 
 import ErrorPage from "./pages/ErrorPage";
 import MovieDetailPage from "./pages/MovieDetailPage";
+import ReccomendationPage from "./pages/ReccomendationPage";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,11 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: "movies/:id", element: <MovieDetailPage /> },
     ],
+  },
+  {
+    path: "/recommend",
+    element: <ReccomendationPage />,
+    errorElement: <ErrorPage />,
   },
 ]);
 

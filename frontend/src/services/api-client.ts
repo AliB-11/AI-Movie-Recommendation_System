@@ -63,6 +63,7 @@ export class APIClientMovie<T>{
   get = (id:string | undefined)=> {
     return axiosInstance.get<T>(this.endpoint + '/' + id).then(res=>res.data)
   }
+
 }
 
 

@@ -66,7 +66,7 @@ const MovieDetailPage = () => {
           src={getPoster(movie.backdrop_path)} // request smaller version
           alt={movie.title}
           objectFit="cover"
-          objectPosition="50% 20%" // 👈 shift down: crop ~10% from top, rest from bottom
+          objectPosition="50% 20%" //  shift down: crop ~10% from top, rest from bottom
           w="100%"
           h="100%"
         />
