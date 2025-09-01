@@ -9,7 +9,7 @@ This project combines traditional filtering with a **ai based recommendation alg
 
 ![Ai_Movie_Recommender_WebPage](./frontend/src/assets/AI_Movie_Recommender_Webpage.png)
 
-- Website Link: https://movie-store-lovat.vercel.app/recommend
+- Website Link: https://movie-store-lovat.vercel.app
 
 ---
 
@@ -36,11 +36,12 @@ This project combines traditional filtering with a **ai based recommendation alg
 
 The recommendation system is based on a **hybrid AI model**:
 
-- **Content-Based Filtering**  
-  Feature extraction: Each movie’s title and genres are combined into a single string (e.g., "Toy Story Animation Children").
-  Vectorization: The text is transformed into numerical features using TF-IDF (Term Frequency–Inverse Document Frequency), which highlights important words while ignoring common ones.
-  Similarity calculation: A cosine similarity matrix compares every pair of movies. Movies with higher similarity scores are considered more alike.
-  Ranking: For a given movie, the system selects the top N most similar movies as recommendations.
+- **Content-Based Filtering**
+
+  - Feature extraction: Each movie’s title and genres are combined into a single string (e.g., "Toy Story Animation Children").
+  - Vectorization: The text is transformed into numerical features using TF-IDF (Term Frequency–Inverse Document Frequency), which highlights important words while ignoring common ones.
+  - Similarity calculation: A cosine similarity matrix compares every pair of movies. Movies with higher similarity scores are considered more alike.
+  - Ranking: For a given movie, the system selects the top N most similar movies as recommendations.
 
 - **Collaborative Filtering**  
   Uses user rating patterns from the MovieLens dataset to enhance personalization.
@@ -67,6 +68,4 @@ This combination produces a more **accurate and personalized recommendation** th
 
 - Expand dataset beyond 5000 movies.
 - Add user login + personalized recommendations.
-- Improve ranking by analyzing sematic similarities from movie descriptions by using LLMs like ollama or Openai
-
----
+- Enhance ranking by leveraging LLMs (e.g., Ollama, OpenAI) to analyze semantic similarities in movie descriptions.
