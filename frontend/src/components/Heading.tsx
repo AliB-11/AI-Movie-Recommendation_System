@@ -15,7 +15,7 @@ const Heading = () => {
   const filterlabel = [movieQuery?.filter?.label, " ", movieQuery?.genre?.name];
 
   return (
-    <Text fontSize={{ base: "35", md: "50" }} fontWeight={"700"}>
+    <Text fontSize={{ base: "31", md: "50" }} fontWeight={"700"}>
       {searchtitle ? searchtitle : filterlabel.map((filter) => filter)} Movies
     </Text>
   );

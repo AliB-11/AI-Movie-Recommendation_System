@@ -1,4 +1,4 @@
-import { Grid, Show, GridItem, VStack, HStack } from "@chakra-ui/react";
+import { Grid, Show, GridItem, VStack, HStack, Stack } from "@chakra-ui/react";
 import Filter from "../components/Filter";
 import GenreList from "../components/GenreList";
 import MovieGrid from "../components/MovieGrid";
@@ -28,10 +28,15 @@ const HomePage = () => {
             <HStack>
               <Heading></Heading>
             </HStack>
-            <HStack marginBottom={{ base: 4, md: 4 }} gap={{ base: 2, md: 8 }}>
-              <Filter></Filter>
+            <Stack
+              direction={{ base: "column", md: "row" }}
+              spacing={{ base: 5, md: 8 }}
+              align="start"
+              marginY={{ base: 1, md: 4 }}
+            >
+              <Filter />
               <ReccomendationButton />
-            </HStack>
+            </Stack>
           </VStack>
           <MovieGrid></MovieGrid>
         </GridItem>

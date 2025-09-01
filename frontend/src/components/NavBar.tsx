@@ -11,6 +11,7 @@ import { BiSolidCameraMovie } from "react-icons/bi";
 import ColorModeSwitch from "./ColorModeSwitch";
 import SearchInput from "./SearchInput";
 import { Link } from "react-router-dom";
+import { IoTvOutline } from "react-icons/io5";
 
 const NavBar = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -25,9 +26,18 @@ const NavBar = () => {
       justifyContent={"space-between"}
       flexDirection={"row"}
     >
-      <HStack width={{ base: "50px", md: "70px" }} marginTop={1}>
+      <HStack
+        marginLeft={3}
+        width={{ base: "50px", md: "70px" }}
+        spacing={3}
+        marginTop={{ base: 1, md: 0.5 }}
+      >
         <Link to={"/"}>
-          <Icon as={BiSolidCameraMovie} boxSize={9} objectFit={"cover"} />
+          <Icon
+            as={BiSolidCameraMovie}
+            boxSize={{ base: 9, md: 10 }}
+            objectFit={"cover"}
+          />
         </Link>
       </HStack>
 

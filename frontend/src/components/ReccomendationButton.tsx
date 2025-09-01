@@ -10,7 +10,11 @@ const ReccomendationButton = () => {
 
   return (
     <Link to={"/recommend"}>
-      <Button color={"gold"} backgroundColor={color}>
+      <Button
+        color={"gold"}
+        backgroundColor={color}
+        fontSize={{ base: 14, md: 16 }}
+      >
         🎬 Get Movie Recommendations
       </Button>
     </Link>

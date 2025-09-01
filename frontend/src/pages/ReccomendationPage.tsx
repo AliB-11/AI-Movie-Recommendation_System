@@ -20,19 +20,19 @@ const ReccomendationPage = () => {
           <VStack marginTop={3}>
             <Text
               marginTop={15}
-              fontSize={{ base: "35", md: "40" }}
+              fontSize={{ base: "27", md: "40" }}
               fontWeight={"700"}
             >
               AI Movie Recommender
             </Text>
             <Flex
               textAlign="center"
-              maxW={{ base: "450px", md: "720px" }} // keeps it readable, adjust as needed
+              maxW={{ base: "350px", md: "720px" }} // keeps it readable, adjust as needed
               mx="auto" // centers horizontally
             >
               <Text
                 marginTop={5}
-                fontSize={{ base: "15", md: "16" }}
+                fontSize={{ base: "12", md: "16" }}
                 fontWeight={"200"}
               >
                 Welcome to the movie recommendation system. Enter the movie

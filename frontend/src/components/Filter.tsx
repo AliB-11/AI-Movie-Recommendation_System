@@ -18,7 +18,11 @@ const Filter = () => {
 
   return (
     <Menu>
-      <MenuButton as={Button} rightIcon={<BsChevronDown />}>
+      <MenuButton
+        as={Button}
+        rightIcon={<BsChevronDown />}
+        fontSize={{ base: 14, md: 16 }}
+      >
         Filter by: {movieQuery.filter?.label || "Recently Popular"}
       </MenuButton>
       <MenuList>
