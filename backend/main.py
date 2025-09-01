@@ -88,6 +88,10 @@ def search_movies(query: str = Query(..., description="Movie title to search")):
     rec_tmdb_ids = get_recommendations(movie_id)
     return {"recommendation": rec_tmdb_ids}
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
 
 
 
