@@ -10,8 +10,7 @@ app = FastAPI()
 
 # ---------------- CORS setup ----------------
 origins = [
-    "http://localhost:5173",
-    "https://movie-store-1st2zk3vv-alis-projects-eb5dcfb7.vercel.app",  # frontend URL
+  "https://my-movie-store.vercel.app"
 ]
 
 app.add_middleware(
