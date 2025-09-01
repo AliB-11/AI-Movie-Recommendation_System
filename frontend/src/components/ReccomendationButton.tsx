@@ -1,17 +1,16 @@
-import { Button } from "@chakra-ui/react";
+import { Button, useColorMode } from "@chakra-ui/react";
 import useSearch from "../hooks/useSearch";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const ReccomendationButton = () => {
-  // const movieName = "Forrest Gump 1994";
-  // const [searchEnabled, setSearchEnabled] = useState(false);
-  // const { data, error, isLoading } = useSearch(movieName, searchEnabled);
-  // if (data) console.log(data.recommendation[0]);
+  const { toggleColorMode, colorMode } = useColorMode();
+
+  const color = colorMode == "dark" ? "" : "black";
 
   return (
     <Link to={"/recommend"}>
-      <Button color={"gold"} backgroundColor={"black"}>
+      <Button color={"gold"} backgroundColor={color}>
         🎬 Get Movie Recommendations
       </Button>
     </Link>

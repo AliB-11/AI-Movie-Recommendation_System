@@ -94,50 +94,81 @@ def search_movies(query: str = Query(..., description="Movie title to search")):
 
 # --- Recommendation Algorithm ---
 
-def find_similar_movies(movie_id):
-    #Finding reccomenedation from similar users
-    similar_users = ratings[(ratings["movieId"] == movie_id) & (ratings["rating"] >= 4.5)] ["userId"].unique()
-    similar_user_recs = ratings[(ratings["userId"].isin(similar_users)) & (ratings["rating"] >= 4.5)]["movieId"]
-#     similar_users = top_ratings[(top_ratings["movieId"] == movie_id) & (top_ratings["rating"] >= 4.5)]["userId"].unique()
-#     similar_user_recs = top_ratings[(top_ratings["userId"].isin(similar_users)) & (top_ratings["rating"] >= 4.5)]["movieId"]
-    
-   
-    #Over 10% of users reccomend the movie
-    similar_user_recs = similar_user_recs.value_counts() / len(similar_users)
-    similar_user_recs = similar_user_recs[similar_user_recs > .1]
-    
-    #Finding how common the reccoemendation were among all users 
-    all_users = ratings[(ratings["movieId"].isin(similar_user_recs.index)) & (ratings["rating"] >= 4 )]
-#     all_users = top_ratings[(top_ratings["movieId"].isin(similar_user_recs.index)) & (top_ratings["rating"] >= 4)]
-    all_user_recs = all_users["movieId"].value_counts() / len(all_users["userId"].unique())
-    
-    #Generate a score 
-    rec_percentages = pd.concat([similar_user_recs, all_user_recs], axis =1)
-    rec_percentages.columns = ["similar", "all"]
-    rec_percentages["score"] = rec_percentages["similar"] / rec_percentages["all"]
-    
-    base_genres = set(movies.loc[movies["movieId"] == movie_id, "genres"].values[0].split('|'))
+def recommend_content(movie_id, top_n=10):
 
-    def genre_similarity(candidate_id):
-        candidate_genres = set(movies.loc[movies["movieId"] == candidate_id, "genres"].values[0].split('|'))
-        overlap = len(base_genres & candidate_genres)
-        # Fraction of genres that overlap
-        return overlap / len(base_genres) if len(base_genres) > 0 else 0
+        # movies DataFrame: movieId, title, genres, clean_title
 
-    # Apply a small boost to the score
-    rec_percentages["score"] = rec_percentages.apply(
-        lambda row: row["score"] * (1 + 0.1 * genre_similarity(row.name)),
-        axis=1
+    # Combine title + genres into text features
+    movies['text_features'] = movies['clean_title'] + " " + movies['genres'].str.replace('|', ' ')
+
+    # TF-IDF Vectorizer
+    tfidf = TfidfVectorizer(stop_words='english')
+    tfidf_matrix = tfidf.fit_transform(movies['text_features'])
+
+    # Cosine similarity matrix
+    cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
+
+    # Movie index map
+    movie_idx_map = pd.Series(movies.index, index=movies['movieId']).to_dict()
+
+    if movie_id not in movie_idx_map:
+        return pd.DataFrame()
+
+    idx = movie_idx_map[movie_id]
+    sim_scores = list(enumerate(cosine_sim[idx]))
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+    sim_scores = sim_scores[1: top_n + 1]
+
+    recommended_idx = [i[0] for i in sim_scores]
+    recs = movies.iloc[recommended_idx][['movieId', 'clean_title', 'genres']].copy()
+    recs['content_score'] = [i[1] for i in sim_scores]
+    return recs
+
+
+
+# Function: recommend by collaborative filtering
+def recommend_collab(movie_id, top_n=10, min_ratings=50):
+    movie_stats = ratings.groupby('movieId').agg({'rating': ['mean', 'count']})
+    movie_stats.columns = ['avg_rating', 'rating_count']
+    similar_users = ratings[ratings['movieId'] == movie_id]['userId'].unique()
+    similar_ratings = ratings[ratings['userId'].isin(similar_users)]
+    
+    # aggregate mean ratings from these similar users
+    recs = (
+        similar_ratings.groupby('movieId')['rating']
+        .mean()
+        .reset_index()
+        .rename(columns={'rating': 'collab_score'})
     )
     
-    #Sorting Scores 
-    rec_percentages = rec_percentages.sort_values("score", ascending=False)  
+    # merge with movie info
+    recs = recs.merge(movies, on='movieId', how='left')
+    recs = recs.merge(movie_stats, on='movieId', how='left')
     
-    #Return top 10 reccomendations and merging with dataset
-    rec_percentages = rec_percentages.head(10).reset_index().merge(
-    movies[['movieId', 'clean_title']],
-    left_on='index',
-    right_on='movieId'
-)
+    # filter out unpopular
+    recs = recs[recs['rating_count'] >= min_ratings]
+    recs = recs[recs['movieId'] != movie_id]
     
-    return rec_percentages
+    return recs.sort_values('collab_score', ascending=False).head(top_n)
+
+
+def recommend_hybrid(movie_id, top_n=10, alpha=0.5):
+    """
+    Hybrid recommender combining collaborative filtering and content-based AI.
+    alpha = weight for collaborative filtering (0.0–1.0)
+    """
+    content_recs = recommend_content(movie_id, top_n * 2)
+    collab_recs = recommend_collab(movie_id, top_n * 2)
+    
+    # merge on movieId
+    hybrid = pd.merge(content_recs, collab_recs, on='movieId', how='outer', suffixes=('_content', '_collab'))
+    
+    # fill NaNs with 0
+    hybrid['content_score'] = hybrid['content_score'].fillna(0)
+    hybrid['collab_score'] = hybrid['collab_score'].fillna(0)
+    
+    # weighted hybrid score
+    hybrid['hybrid_score'] = alpha * hybrid['collab_score'] + (1 - alpha) * hybrid['content_score']
+    
+    # sort by hybrid score
+    return hybrid.sort_values('hybrid_score', ascending=False).head(top_n)
