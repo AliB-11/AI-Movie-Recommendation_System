@@ -1,6 +1,6 @@
-# 🎬 AI Movie Recommender
+# 🎬 ML Movie Recommender
 
-An AI-powered movie recommendation system with a **React (TypeScript) frontend** and a **FastAPI (Python) backend**.  
+An Ai-powered movie recommendation system with a **React (TypeScript) frontend** and a **FastAPI (Python) backend**.  
 This project combines traditional filtering with a **ai based recommendation algorithm** to deliver personalized movie suggestions.
 
 ---
